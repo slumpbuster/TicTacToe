@@ -1,5 +1,5 @@
 # TicTacToe
-<img src="./ToDo.png" height="350px" width="350px"/>
+<img src="./TicTacToe.PNG" height="350px" width="350px"/>
 
 ## Description 
 This is a simple Tic Tac Toe game. First player to get 3 in a row (horizontally, vertically, or diagonally, wins.
