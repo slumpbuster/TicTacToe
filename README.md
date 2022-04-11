@@ -42,11 +42,11 @@ This was done as an assignment in the MIT course - Full Stack Development with M
 ## Improvements Made
 - 2022-04-08: Added check to make sure when a user made a selection the square gets disabled so it can't be overwritten
 - 2022-04-08: Added check for when winner is found to disable any further selectionsopacity
+- 2022-04-11: Added ability to play One Player (vs Computer) or Two Player (take turns)
 
 ## Roadmap of Future Improvements
 - Add the ability to restart the game
 - Add the ability to give players names
-- Add the ability to play a "computer"
 
 ---------
 

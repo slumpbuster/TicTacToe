@@ -5,9 +5,17 @@ button {
   border-radius: 10px;
 }
 
+select {
+  width: 180px;
+}
+
+.info {
+  margin-left: 8px;
+}
+
 .game-board {
   width: 600px;
-  height: 600px;
+  height: 610px;
   margin: 0 auto;
   background-color: #34495e;
   color: rgb(204, 28, 28);
@@ -19,12 +27,12 @@ button {
 }
 
 .grid-row {
-  font-family: Helvetica;
-  font-weight: bold;
-  font-size: 4em;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr 1fr;
+  font-family: Helvetica;
+  font-weight: bold;
+  font-size: 8em;
 }
 
 .red {

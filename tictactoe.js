@@ -1,8 +1,23 @@
+let cpu = true;
 const squares = [[0,1,2],[3,4,5],[6,7,8]];
+let totalClicks = 0;
 
-const Page = () => {
+const Settings = () => {
+  const handleChange = (e) => {
+    if (e.target.value === "2") {
+      cpu = false;
+    } else {
+      cpu = true;
+    }
+  }
   return (
-    <Board />
+    <div style={{display: "inline-block", width: "200px", margin: "4px 8px 4px 8px"}}>
+      <h1>Tik Tak Toe</h1>
+      <select disabled={totalClicks === 0 ? false : true} onChange={(e) => {handleChange(e)}}>
+        <option value="1">One Player Mode</option>
+        <option value="2">Two Player Mode</option>
+      </select>
+    </div>
   )
 }
 
@@ -11,14 +26,17 @@ const Board = () => {
   // State keeps track of next player and gameState
   const [player, setPlayer] = React.useState(1);
   const [gameState, setGameState] = React.useState([]);
+  const [disabled, setDisabled] = React.useState(Array.from(Array(9).keys()).fill(false, 0, 9));
   let winner = checkForWinner(gameState);
   let done = winner === -1 ? false : true;
-  let status = `Winner is ${winner === -1 ? 'No winner yet' : winner === 0 ? 'Payer O' : 'Player X'}`;
-  let turn = `Next Player: Player ${player == '0' ? 'O' : 'X'}`;
+  let status = `${winner === -1 && totalClicks === 9 ? 'Game is a Draw' : winner === 0 ? 'Payer O' : 'Player X'}`;
+  let turn = `Player ${player == '0' ? 'O' : 'X'} Move`;
 
   const takeTurn = (id) => {
     setGameState([...gameState, { id: id, player: player }]);
     setPlayer((player + 1) % 2); // get next player
+    disabled[id] = true;
+    setDisabled(disabled);
     return player;
   };
   function renderRow(row) {
@@ -26,58 +44,64 @@ const Board = () => {
   }
   function renderSquare(i) {
     // use properties to pass callback function takeTurn to Child
-    return (
-      <Square key={`square_${i}`} takeTurn={takeTurn} id={i} done={done}></Square>
-    )
+    return <Square key={`square_${i}`} takeTurn={takeTurn} id={i} done={done} disabled={disabled}></Square>
   }
 
   return (
-    <div className="game-board">
-      {squares.map((row) => (
-        <div key={`row_${row}`} className="grid-row">
-          {renderRow(row)}
+    <div className="game">
+      <Settings key="settings" />
+      <div style={{display: "inline-block", width: "600px"}}>      
+        <div className="game-board">
+          {squares.map((row) => (
+            <div key={`row_${row}`} className="grid-row">
+              {renderRow(row)}
+            </div>
+          ))}
+          <div className="info">
+            <h1>{winner != -1 || totalClicks === 9 ? 'Winner is ' + status : turn}</h1>
+          </div>
         </div>
-      ))}
-      <div id="info">
-        <h1 id="turn">{turn}</h1>
-        <h1 id="winner">{status}</h1>
       </div>
     </div>
   );
 };
 
-const Square = ({ takeTurn, id, done }) => {
-  const mark = ['O', 'X', '+'];
+const Square = ({ takeTurn, id, done, disabled }) => {
+  const mark = ['O', 'X'];
   // id is the square's number
-  // filled tells you if square has been filled
   // tik tells you symbol in square (same as player)
-  // You call takeTurn to tell Parent that the square has been filled
-  const [filled, setFilled] = React.useState(false);
   const [tik, setTik] = React.useState(2);
-  const [disabled, setDisabled] = React.useState(Array.from(Array(9).keys()).fill(false, 0, 9));
+
+  const move = (e, id) => {
+    totalClicks ++;
+    setTik(takeTurn(id));
+    if (cpu && totalClicks < 9 && !done && (e.screenX > 0 || e.screenY > 0)) {
+      setTimeout(computerMove, 1000);
+    }
+  }
+  const computerMove = () => {
+    let i = -1;
+    do {
+      let random = Math.floor(Math.random() * 9);
+      if (!disabled[random]) i = random;
+    } while (i === -1);
+    if (i != -1) {
+      document.getElementById(`square_${i}`).click();
+    }
+  }
 
   return (
-    <button disabled={!done ? disabled[id] : done}
+    <button key={`square_${id}`} id={`square_${id}`} disabled={!done ? disabled[id] : done}
       className={tik == '1' ? 'red' : 'white'}
-      onClick={() => {
-        disabled[id] = true;
-        setDisabled(disabled)
-        setTik(takeTurn(id));
-        setFilled(true);
-        //console.log(`Square: ${id} filled by player : ${tik}`);
-      }}
+      onClick={(e) => {move(e, id)}}
     >
-      <h1>{mark[tik]}</h1>
+      {mark[tik]}
     </button>
   );
 };
 
 const Game = () => {
-  return (
-    <div className="game">
-      <Board></Board>
-    </div>
-  );
+  return <Board />
 };
 
 // Checking for Winner takes a bit of work
@@ -137,4 +161,4 @@ function isSuperset(set, subset) {
   return true;
 }
 
-ReactDOM.render(<Page />, document.getElementById('root'));
+ReactDOM.render(<Game />, document.getElementById('root'));
