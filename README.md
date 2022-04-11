@@ -42,7 +42,9 @@ This was done as an assignment in the MIT course - Full Stack Development with M
 ## Improvements Made
 - 2022-04-08: Added check to make sure when a user made a selection the square gets disabled so it can't be overwritten
 - 2022-04-08: Added check for when winner is found to disable any further selectionsopacity
-- 2022-04-11: Added ability to play One Player (vs Computer) or Two Player (take turns)
+- 2022-04-11: Added ability to play One Player (vs Computer *Random) or Two Player (take turns)
+- 2022-04-11: Added turn/winner notification text to be same as player (X -> red / O -> white)
+- 2022-04-11: Stopped human player from clicking when computer's turn
 
 ## Roadmap of Future Improvements
 - Add the ability to restart the game

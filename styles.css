@@ -10,14 +10,21 @@ select {
 }
 
 .info {
-  margin-left: 8px;
+  list-style-type: none;
+}
+.info li {
+  display: inline-block;
+  margin-left: -20px;
+  margin-right: 28px;
+  margin-top: 8px;
+  font-size: 40px;
 }
 
 .game-board {
   width: 600px;
   height: 610px;
   margin: 0 auto;
-  background-color: #34495e;
+  background-color: #A9A9A9;
   color: rgb(204, 28, 28);
   border: 6px solid #0b0d0f;
   border-radius: 10px;
@@ -38,7 +45,9 @@ select {
 .red {
   color: red;
 }
-
 .white {
   color: white;
+}
+.black {
+  color: black;
 }

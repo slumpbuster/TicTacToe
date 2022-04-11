@@ -29,7 +29,7 @@ const Board = () => {
   const [disabled, setDisabled] = React.useState(Array.from(Array(9).keys()).fill(false, 0, 9));
   let winner = checkForWinner(gameState);
   let done = winner === -1 ? false : true;
-  let status = `${winner === -1 && totalClicks === 9 ? 'Game is a Draw' : winner === 0 ? 'Payer O' : 'Player X'}`;
+  let status = `${winner === -1 && totalClicks === 9 ? 'Game is a Draw' : winner === 0 ? 'Player O' : 'Player X'}`;
   let turn = `Player ${player == '0' ? 'O' : 'X'} Move`;
 
   const takeTurn = (id) => {
@@ -44,7 +44,7 @@ const Board = () => {
   }
   function renderSquare(i) {
     // use properties to pass callback function takeTurn to Child
-    return <Square key={`square_${i}`} takeTurn={takeTurn} id={i} done={done} disabled={disabled}></Square>
+    return <Square key={`square_${i}`} player={player} takeTurn={takeTurn} id={i} done={done} disabled={disabled}></Square>
   }
 
   return (
@@ -57,33 +57,44 @@ const Board = () => {
               {renderRow(row)}
             </div>
           ))}
-          <div className="info">
-            <h1>{winner != -1 || totalClicks === 9 ? 'Winner is ' + status : turn}</h1>
-          </div>
+          <ul className="info">
+            <li className="black">{winner != -1 || totalClicks === 9 ? 'Winner: ' : 'Turn: '}</li>
+            <li className={winner == -1 && totalClicks === 9
+              ? 'black'
+              : winner == 1
+                ? 'red'
+                : winner == 0
+                  ? 'white'
+                  : player == '1'
+                    ? 'red'
+                    : 'white'}>{winner != -1 || totalClicks === 9 ? '' + status : turn}</li>
+          </ul>
         </div>
       </div>
     </div>
   );
 };
 
-const Square = ({ takeTurn, id, done, disabled }) => {
+const Square = ({ takeTurn, player, id, done, disabled }) => {
   const mark = ['O', 'X'];
   // id is the square's number
   // tik tells you symbol in square (same as player)
   const [tik, setTik] = React.useState(2);
 
   const move = (e, id) => {
-    totalClicks ++;
-    setTik(takeTurn(id));
-    if (cpu && totalClicks < 9 && !done && (e.screenX > 0 || e.screenY > 0)) {
-      setTimeout(computerMove, 1000);
-    }
+    if (cpu && player === 0 && (e.screenX > 0 || e.screenY > 0)) return;
+      totalClicks ++;
+      setTik(takeTurn(id));
+      if (cpu && totalClicks < 9 && !done && player === 1) {
+        setTimeout(computerMove, 1000);
+      }
   }
   const computerMove = () => {
     let i = -1;
     do {
       let random = Math.floor(Math.random() * 9);
       if (!disabled[random]) i = random;
+      //console.log(i, random)
     } while (i === -1);
     if (i != -1) {
       document.getElementById(`square_${i}`).click();
