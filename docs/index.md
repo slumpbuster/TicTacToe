@@ -32,7 +32,7 @@ This was done as an assignment in the MIT course - Full Stack Development with M
 ---------
 
 ## Files 
-- **/index.html** - Start-up file to be opened by browse 
+- **/index.html** - Start-up file to be opened by browser
 - **/tictactoe.js** - Contains the React code and logic to build the tictactoe game
 - **/styles.css** - Stylesheet file that positions objects, controls text, colors, and layout
 - **/TicTacToe.png** - Screenshot for ReadMe
